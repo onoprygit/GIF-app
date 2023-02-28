@@ -5,6 +5,7 @@ import com.onopry.gif_app.app.common.ApiException
 import com.onopry.gif_app.app.common.ApiResult
 import com.onopry.gif_app.app.common.ApiSuccess
 import com.onopry.gif_app.app.data.model.GifItem
+import com.onopry.gif_app.app.data.model.GiphyResponse
 import retrofit2.HttpException
 
 /*
@@ -31,9 +32,30 @@ import retrofit2.HttpException
 
 class GIFApiDataSource(private val apiService: GifService) : RemoteDataSource {
 
-    override suspend fun getGIFs(): ApiResult<List<GifItem>> {
+    override suspend fun getGIFs(
+        itemIndex: Int,
+        limit: Int
+    ): ApiResult<GiphyResponse> {
         return try {
-            val res = apiService.getTradingGIFs()
+            val res = apiService.getTradingGIFs(offset = itemIndex, limit = limit)
+            val body = res.body()
+
+            if (res.isSuccessful && body != null)
+                ApiSuccess(data = body)
+            else
+                ApiError(code = res.code(), message = res.message() ?: "Unexpected error occurs...")
+        } catch (e: HttpException) {
+            ApiError(code = e.code(), message = e.message()  ?: "Unexpected error occurs...")
+        } catch (e: Throwable) {
+            ApiException(e)
+        }
+    }
+
+}
+
+
+/*        return try {
+            val res = apiService.getTradingGIFs(offset = itemIndex, limit = limit)
             val body = res.body()
 
             if (res.isSuccessful && body != null)
@@ -44,9 +66,8 @@ class GIFApiDataSource(private val apiService: GifService) : RemoteDataSource {
             ApiError(code = e.code(), message = e.message())
         } catch (e: Throwable) {
             ApiException(e)
-        }
-    }
-}
+        }*/
+
 /*suspend fun getGIFs(): ApiResult<GifItem> {
     when(
         val apiRes = wrapRetrofitRequest { apiService.getTradingGIFs() }

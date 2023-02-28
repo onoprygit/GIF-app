@@ -13,5 +13,8 @@ interface GifService {
     suspend fun fetchMoviesPreviewList(): Response<MovieListResponseBody>*/
 
     @GET(NetworkConst.GIPHY_ENDPOINT)
-    suspend fun getTradingGIFs(@Query(value = "name") limit: Int = DEFAULT_REQUEST_ITEMS_LIMIT): Response<GiphyResponse>
+    suspend fun getTradingGIFs(
+        @Query(value = "offset") offset: Int = 0,
+        @Query(value = "limit") limit: Int = DEFAULT_REQUEST_ITEMS_LIMIT
+    ): Response<GiphyResponse>
 }
