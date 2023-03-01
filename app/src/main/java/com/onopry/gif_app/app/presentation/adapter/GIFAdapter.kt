@@ -23,7 +23,6 @@ class GIFAdapter : PagingDataAdapter<GifItem, GIFAdapter.GIFViewHolder>(GIFDiffC
         )
     }
 
-
     class GIFViewHolder(
         private val binding: ItemGifBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -32,11 +31,14 @@ class GIFAdapter : PagingDataAdapter<GifItem, GIFAdapter.GIFViewHolder>(GIFDiffC
             loadGif(gif)
         }
 
-        private fun loadGif(gif: GifItem) =
-            Glide.with(binding.root)
-                .asGif()
-                .load(gif.url)
-                .placeholder(R.drawable.placeholder)
-                .into(binding.gifImg)
+        private fun loadGif(gif: GifItem) {
+            val imageWebpUrl = gif.images.fixedHeight.webp
+            if (imageWebpUrl.isNotBlank())
+                Glide.with(binding.root)
+                    .asGif()
+                    .load(imageWebpUrl)
+                    .placeholder(R.drawable.placeholder)
+                    .into(binding.gifImg)
+        }
     }
 }

@@ -1,11 +1,13 @@
 package com.onopry.gif_app.app.data.datasource
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.onopry.gif_app.app.common.*
 import com.onopry.gif_app.app.common.NetworkConst.DEFAULT_REQUEST_ITEMS_LIMIT
 import com.onopry.gif_app.app.data.model.GifItem
 import com.onopry.gif_app.app.data.model.Pagination
+import javax.inject.Inject
 
 class GIFPagingSource(
     private val remoteDataSource: RemoteDataSource,
@@ -14,34 +16,33 @@ class GIFPagingSource(
     private val startingKey = 25
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GifItem> {
+        Log.d("GIFPagingSource", "load()")
         val itemOffset = params.key ?: startingKey
 
         return try {
-            val gifs: List<GifItem>
-            val pagination: Pagination
-
-            when (val response = remoteDataSource.getGIFs(itemOffset, itemsLimit)) {
+            when (
+                val response = remoteDataSource.getGIFs(itemOffset, params.loadSize)
+            ) {
                 is ApiSuccess -> {
-                    gifs = response.data.gifItemList
-                    pagination = response.data.pagination
+                    val gifs: List<GifItem> = response.data.gifItemList
+                    val pagination: Pagination = response.data.pagination
+                    LoadResult.Page(
+                        data = gifs,
+                        prevKey = if (itemOffset == startingKey) null else itemOffset - itemsLimit,
+                        nextKey = if (pagination.totalCount - pagination.offset >= itemsLimit) pagination.offset + itemsLimit else null
+                    )
                 }
                 is ApiError ->
-                    return LoadResult.Error(
+                    LoadResult.Error(
                         throwable = GifLoadException(
                             code = response.code,
                             message = response.message
                         )
                     )
                 is ApiException ->
-                    return LoadResult.Error(response.e)
+                    LoadResult.Error(response.e)
             }
 
-
-            return LoadResult.Page(
-                data = gifs,
-                prevKey = if (itemOffset == startingKey) null else itemOffset - itemsLimit,
-                nextKey = if (pagination.totalCount - pagination.offset >= itemsLimit) pagination.offset + itemsLimit else null
-            )
         } catch (e: Exception) {
             return LoadResult.Error(throwable = e)
         }

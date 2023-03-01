@@ -6,7 +6,7 @@ import com.onopry.gif_app.app.data.model.GiphyResponse
 
 interface RemoteDataSource {
     suspend fun getGIFs(
-        itemIndex: Int = 0,
-        limit: Int = 0
+        itemIndex: Int,
+        limit: Int
     ): ApiResult<GiphyResponse>
 }

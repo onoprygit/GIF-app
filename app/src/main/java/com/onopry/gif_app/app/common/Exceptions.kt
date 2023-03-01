@@ -1,8 +1,9 @@
 package com.onopry.gif_app.app.common
 
-import okio.IOException
+import java.io.IOException
+
 
 class GifLoadException(
     private val code: Int,
     message: String
-): IOException(message = message)
+): IOException(message)

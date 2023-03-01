@@ -15,23 +15,22 @@ import com.onopry.gif_app.app.data.datasource.wrapRetrofitRequest
 import com.onopry.gif_app.app.data.model.GifItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 class GIFRepository(
     private val dataSource: RemoteDataSource
 ) : Repository {
-//    override suspend fun getGIFs() = dataSource.getGIFs()
-
     override fun getPagedGIFs(): Flow<PagingData<GifItem>> {
-        return Pager(
+        val pager = Pager(
             config = PagingConfig(
                 pageSize = DEFAULT_REQUEST_ITEMS_LIMIT,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                GIFPagingSource(
-                    dataSource
-                )
+                GIFPagingSource(dataSource)
             }
-        ).flow
+        )
+        val pagerFlow = pager.flow
+        return pagerFlow
     }
 }

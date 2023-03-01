@@ -1,5 +1,12 @@
 package com.onopry.gif_app.app.core
 
 import android.app.Application
+import android.util.Log
+import dagger.hilt.android.HiltAndroidApp
 
-class App: Application()
+@HiltAndroidApp
+class App: Application() {
+    init {
+        Log.d("MyAppHasStarted", "started")
+    }
+}
