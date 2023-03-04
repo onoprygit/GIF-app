@@ -51,11 +51,4 @@ class GIFApiDataSource @Inject constructor(private val apiService: GifService) :
         }
     }
 
-    suspend fun searchQuery(
-        itemIndex: Int,
-        limit: Int, query: String
-    ) {
-
-    }
-
 }
