@@ -25,19 +25,14 @@ class ListViewModel @Inject constructor(
     val gifFlow: Flow<PagingData<GifItem>> = repo.getPagedGIFs().cachedIn(viewModelScope)
 
     val searchFlow = MutableStateFlow<PagingData<GifItem>?>(null)
-//    var searchFlow: Flow<PagingData<GifItem>>? = null
 
     private fun search(query: String) {
         searchQueryJob?.cancel()
         searchQueryJob = viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "search input: $query")
-
-            repo.searchQuery(query).cachedIn(viewModelScope).collectLatest {
-                searchFlow.emit(it)
-            }
-
-
-
+            repo.searchQuery(query)
+                .cachedIn(viewModelScope)
+                .collectLatest { searchFlow.emit(it) }
             searchQueryJob = null
         }
     }
@@ -47,8 +42,6 @@ class ListViewModel @Inject constructor(
             searchRequest.emit(userInput.toString())
         }
     }
-
-
 
 
     init {
