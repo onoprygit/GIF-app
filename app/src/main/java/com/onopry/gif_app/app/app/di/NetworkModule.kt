@@ -1,7 +1,8 @@
-package com.onopry.gif_app.app.di
+package com.onopry.gif_app.app.app.di
 
 import com.onopry.gif_app.app.common.NetworkConst
-import com.onopry.gif_app.app.data.datasource.GifService
+import com.onopry.gif_app.app.data.datasource.network.GifService
+import com.onopry.gif_app.app.utils.addQueryParam
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -25,9 +26,10 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient =
         OkHttpClient.Builder()
+            .addQueryParam("api_key", NetworkConst.API_KEY)
             .addInterceptor(interceptor)
             .build()
-//            .addQueryParam("api_key", NetworkConst.API_KEY)
+
 
     @Provides
     @Singleton

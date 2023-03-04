@@ -8,4 +8,5 @@ import kotlinx.coroutines.flow.Flow
 interface Repository {
 //    suspend fun getGIFs(): ApiResult<List<GifItem>>
     fun getPagedGIFs(): Flow<PagingData<GifItem>>
+    fun searchQuery(query: String): Flow<PagingData<GifItem>>
 }

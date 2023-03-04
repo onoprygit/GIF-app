@@ -1,4 +1,4 @@
-package com.onopry.gif_app.app.core
+package com.onopry.gif_app.app.app.core
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

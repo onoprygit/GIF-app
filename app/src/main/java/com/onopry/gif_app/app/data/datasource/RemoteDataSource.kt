@@ -5,7 +5,7 @@ import com.onopry.gif_app.app.data.model.GifItem
 import com.onopry.gif_app.app.data.model.GiphyResponse
 
 interface RemoteDataSource {
-    suspend fun getGIFs(
+    suspend fun getTrandingGIFs(
         itemIndex: Int,
         limit: Int
     ): ApiResult<GiphyResponse>

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.onopry.gif_app.app.presentation.screen.list.ListFragment"
+        android:name="com.onopry.gif_app.app.app.presentation.screen.list.ListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_list" />
 </navigation>
