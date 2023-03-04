@@ -1,4 +1,4 @@
-package com.onopry.gif_app.app.presentation.adapter
+package com.onopry.gif_app.app.app.presentation.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.onopry.gif_app.app.data.model.GifItem

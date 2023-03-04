@@ -1,7 +1,7 @@
-package com.onopry.gif_app.app.di
+package com.onopry.gif_app.app.app.di
 
 import com.onopry.gif_app.app.data.datasource.GIFApiDataSource
-import com.onopry.gif_app.app.data.datasource.GifService
+import com.onopry.gif_app.app.data.datasource.network.GifService
 import com.onopry.gif_app.app.data.datasource.RemoteDataSource
 import com.onopry.gif_app.app.data.repository.GIFRepository
 import com.onopry.gif_app.app.data.repository.Repository

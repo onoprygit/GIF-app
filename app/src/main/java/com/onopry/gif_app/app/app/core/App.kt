@@ -1,4 +1,4 @@
-package com.onopry.gif_app.app.core
+package com.onopry.gif_app.app.app.core
 
 import android.app.Application
 import android.util.Log
