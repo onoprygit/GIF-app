@@ -16,7 +16,7 @@ interface GifService {
 
     @GET("./trending?api_key=dUvaqPT3WeT8eJu7MUN9CT0pNOwfwo5z")
     suspend fun getTradingGIFs(
-        @Query(value = "offset") offset: Int = 0,
+        @Query(value = "offset") offset: Int = 25,
         @Query(value = "limit") limit: Int = DEFAULT_REQUEST_ITEMS_LIMIT,
 //        @Path(value = "api_key") apiKey: String = API_KEY
     ): Response<GiphyResponse>

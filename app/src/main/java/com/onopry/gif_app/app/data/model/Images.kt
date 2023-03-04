@@ -5,6 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Images(
+    val original: FixedSize,
     @Json(name = "fixed_height")
     val fixedHeight: FixedSize,
     @Json(name = "fixed_width")

@@ -6,6 +6,7 @@ import com.onopry.gif_app.app.data.datasource.RemoteDataSource
 import com.onopry.gif_app.app.data.repository.GIFRepository
 import com.onopry.gif_app.app.data.repository.Repository
 import dagger.Module
+
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
@@ -21,8 +22,8 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideRepository(dataSource: RemoteDataSource): Repository =
-        GIFRepository(dataSource)
+    fun provideRepository(dataSource: RemoteDataSource, api: GifService): Repository =
+        GIFRepository(dataSource, api)
 
 
 }

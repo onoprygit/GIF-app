@@ -2,7 +2,6 @@ package com.onopry.gif_app.app.di
 
 import com.onopry.gif_app.app.common.NetworkConst
 import com.onopry.gif_app.app.data.datasource.GifService
-import com.onopry.gif_app.app.utils.addQueryParam
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -19,28 +18,24 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideOkHttpInterceptor() =
-        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    fun provideOkHttpInterceptor() = HttpLoggingInterceptor()
+        .setLevel(HttpLoggingInterceptor.Level.BODY)
 
     @Provides
     @Singleton
     fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient =
         OkHttpClient.Builder()
-//            .addQueryParam("api_key", NetworkConst.API_KEY)
             .addInterceptor(interceptor)
             .build()
+//            .addQueryParam("api_key", NetworkConst.API_KEY)
 
     @Provides
     @Singleton
-    fun provideMoshi(): Moshi =
-        Moshi.Builder().build()
+    fun provideMoshi(): Moshi = Moshi.Builder().build()
 
     @Provides
     @Singleton
-    fun provideCompaniesRetrofit(
-        moshi: Moshi,
-        client: OkHttpClient
-    ): Retrofit =
+    fun provideRetrofit(moshi: Moshi, client: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl(NetworkConst.GIFS_SOURCE_ENDPOINT)
             .client(client)
@@ -49,6 +44,5 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGIFApi(retrofit: Retrofit): GifService =
-        retrofit.create(GifService::class.java)
+    fun provideGIFApi(retrofit: Retrofit): GifService = retrofit.create(GifService::class.java)
 }

@@ -11,7 +11,9 @@ data class GifItem(
     val title: String,
     val rating: String,
     val images: Images,
-    val user: User,
+    val user: User?,
+    @Json(name = "embed_url")
+    val embedUrl: String,
     @Json(name = "import_datetime")
     val importDatetime: String,
     @Json(name = "trending_datetime")
