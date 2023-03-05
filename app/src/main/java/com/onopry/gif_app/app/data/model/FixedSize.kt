@@ -5,14 +5,14 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class FixedSize(
-    val height: String,
-    val mp4: String,
+    val height: String?,
+    val mp4: String?,
     @Json(name = "mp4_size")
-    val mp4Size: String,
-    val size: String,
-    val url: String,
-    val webp: String,
+    val mp4Size: String?,
+    val size: String?,
+    val url: String?,
+    val webp: String?,
     @Json(name = "webp_size")
-    val webpSize: String,
-    val width: String
+    val webpSize: String?,
+    val width: String?
 )

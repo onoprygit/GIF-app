@@ -1,5 +1,6 @@
 package com.onopry.gif_app.app.common
 
+import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -19,4 +20,16 @@ fun LifecycleOwner.observeRepeated(block: suspend () -> Unit) {
             block()
         }
     }
+}
+
+fun View.show() {
+    visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    visibility = View.INVISIBLE
+}
+
+fun View.gone() {
+    visibility = View.GONE
 }

@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
-import com.onopry.gif_app.app.data.datasource.network.GifService
+import com.onopry.gif_app.app.data.network.GifService
 import com.onopry.gif_app.app.data.model.GifItem
 import com.onopry.gif_app.app.data.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,6 +36,8 @@ class ListViewModel @Inject constructor(
             searchQueryJob = null
         }
     }
+
+    fun refresh(){}
 
     fun sendSearchQuery(userInput: CharSequence) {
         viewModelScope.launch {

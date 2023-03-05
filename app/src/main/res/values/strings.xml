@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GIF-app</string>
+    <string name="reload_after_error_button">Try again</string>
 </resources>

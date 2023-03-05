@@ -1,7 +1,7 @@
 package com.onopry.gif_app.app.app.di
 
 import com.onopry.gif_app.app.common.NetworkConst
-import com.onopry.gif_app.app.data.datasource.network.GifService
+import com.onopry.gif_app.app.data.network.GifService
 import com.onopry.gif_app.app.utils.addQueryParam
 import com.squareup.moshi.Moshi
 import dagger.Module

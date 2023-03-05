@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.onopry.gif_app.app.common.NetworkConst
-import com.onopry.gif_app.app.data.datasource.network.GifService
+import com.onopry.gif_app.app.data.network.GifService
 import com.onopry.gif_app.app.data.model.GifItem
 
 class GIFPagingSourceSearch(
