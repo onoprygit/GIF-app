@@ -1,4 +1,4 @@
-package com.onopry.gif_app.app.data.datasource.network
+package com.onopry.gif_app.app.data.network
 
 import com.onopry.gif_app.app.common.ApiError
 import com.onopry.gif_app.app.common.ApiException

@@ -10,3 +10,9 @@ data class GiphyResponse(
     val gifItemList: List<GifItem>,
     val pagination: Pagination
 )
+
+@JsonClass(generateAdapter = true)
+data class SingleGiphyResponse(
+    @Json(name = "data")
+    val gifItem: GifItem
+)

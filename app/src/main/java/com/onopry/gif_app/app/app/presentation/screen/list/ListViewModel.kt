@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
-import com.onopry.gif_app.app.data.datasource.network.GifService
+import com.onopry.gif_app.app.data.network.GifService
 import com.onopry.gif_app.app.data.model.GifItem
 import com.onopry.gif_app.app.data.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,30 +25,25 @@ class ListViewModel @Inject constructor(
     val gifFlow: Flow<PagingData<GifItem>> = repo.getPagedGIFs().cachedIn(viewModelScope)
 
     val searchFlow = MutableStateFlow<PagingData<GifItem>?>(null)
-//    var searchFlow: Flow<PagingData<GifItem>>? = null
 
     private fun search(query: String) {
         searchQueryJob?.cancel()
         searchQueryJob = viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "search input: $query")
-
-            repo.searchQuery(query).cachedIn(viewModelScope).collectLatest {
-                searchFlow.emit(it)
-            }
-
-
-
+            repo.searchQuery(query)
+                .cachedIn(viewModelScope)
+                .collectLatest { searchFlow.emit(it) }
             searchQueryJob = null
         }
     }
+
+    fun refresh(){}
 
     fun sendSearchQuery(userInput: CharSequence) {
         viewModelScope.launch {
             searchRequest.emit(userInput.toString())
         }
     }
-
-
 
 
     init {

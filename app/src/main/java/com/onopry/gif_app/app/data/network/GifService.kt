@@ -1,9 +1,10 @@
-package com.onopry.gif_app.app.data.datasource.network
+package com.onopry.gif_app.app.data.network
 
 import com.onopry.gif_app.app.data.model.GiphyResponse
 import com.onopry.gif_app.app.common.NetworkConst
 import com.onopry.gif_app.app.common.NetworkConst.API_KEY
 import com.onopry.gif_app.app.common.NetworkConst.DEFAULT_REQUEST_ITEMS_LIMIT
+import com.onopry.gif_app.app.data.model.SingleGiphyResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -27,6 +28,11 @@ interface GifService {
         @Query(value = "offset") offset: Int = 25,
         @Query(value = "limit") limit: Int = DEFAULT_REQUEST_ITEMS_LIMIT,
     ): Response<GiphyResponse>
+
+    @GET("{id}")
+    suspend fun getById(
+        @Path(value = "id") id: String
+    ): Response<SingleGiphyResponse>
 
 //    @GET("./search")
 }

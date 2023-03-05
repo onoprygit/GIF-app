@@ -4,8 +4,9 @@ import com.onopry.gif_app.app.common.ApiError
 import com.onopry.gif_app.app.common.ApiException
 import com.onopry.gif_app.app.common.ApiResult
 import com.onopry.gif_app.app.common.ApiSuccess
-import com.onopry.gif_app.app.data.datasource.network.GifService
+import com.onopry.gif_app.app.data.network.GifService
 import com.onopry.gif_app.app.data.model.GiphyResponse
+import com.onopry.gif_app.app.data.network.wrapRetrofitRequest
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -31,7 +32,7 @@ import javax.inject.Inject
 
 */
 
-class GIFApiDataSource @Inject constructor(private val apiService: GifService) : RemoteDataSource {
+class GIFApiDataSource @Inject constructor(private val apiService: GifService) : DataSource {
     override suspend fun getTrandingGIFs(
         itemIndex: Int,
         limit: Int
@@ -49,6 +50,10 @@ class GIFApiDataSource @Inject constructor(private val apiService: GifService) :
         } catch (e: Throwable) {
             ApiException(e)
         }
+    }
+
+    override suspend fun getGIFById(id: String) = wrapRetrofitRequest {
+        apiService.getById(id)
     }
 
 }

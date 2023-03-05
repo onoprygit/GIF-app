@@ -1,13 +1,12 @@
 package com.onopry.gif_app.app.data.repository
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.onopry.gif_app.app.common.NetworkConst.DEFAULT_REQUEST_ITEMS_LIMIT
 import com.onopry.gif_app.app.data.datasource.paging.GIFPagingSourceTrending
-import com.onopry.gif_app.app.data.datasource.network.GifService
-import com.onopry.gif_app.app.data.datasource.RemoteDataSource
+import com.onopry.gif_app.app.data.network.GifService
+import com.onopry.gif_app.app.data.datasource.DataSource
 import com.onopry.gif_app.app.data.datasource.paging.GIFPagingSourceSearch
 import com.onopry.gif_app.app.data.model.GifItem
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 class GIFRepository @Inject constructor(
-    private val dataSource: RemoteDataSource,
+    private val dataSource: DataSource,
     private val apiService: GifService
 ) : Repository {
     override fun getPagedGIFs(): Flow<PagingData<GifItem>> = Pager(
@@ -40,4 +39,6 @@ class GIFRepository @Inject constructor(
                 GIFPagingSourceSearch(apiService = apiService, searchQuery = query)
             }
         ).flow
+
+    override suspend fun getById(id: String) = dataSource.getGIFById(id)
 }
