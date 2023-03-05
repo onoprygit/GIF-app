@@ -18,6 +18,8 @@ import javax.inject.Inject
 class ListViewModel @Inject constructor(
     private val repo: Repository
 ) : ViewModel() {
+
+    //todo добавить prevQuery для того чтобы не отправлять лишние запросы при нажатии Enter, допустим
     private var searchQueryJob: Job? = null
 
     private val searchRequest = MutableStateFlow("")

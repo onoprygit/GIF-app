@@ -10,6 +10,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.gif.GifDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.onopry.gif_app.R
 import com.onopry.gif_app.app.common.gone
 import com.onopry.gif_app.app.common.hide
@@ -34,13 +39,24 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
         observeRepeated {
             viewModel.screenState.collect { state ->
-                Log.d("DetailsFragment", "onViewCreated: ${state::class.java.simpleName}")
-                when(state) {
-                    is
-                    DetailsUiState.Content -> setDetails(state.data)
-                    is DetailsUiState.Loading -> setViewsLoadState()
-                    is DetailsUiState.Error -> setViewsErrorState(state.msg)
-                    is DetailsUiState.Empty -> setViewsLoadState()
+                val TAG = "DetailsLoadState_TAG"
+                when (state) {
+                    is DetailsUiState.Content -> {
+                        Log.d(TAG, "Content")
+                        setDetails(state.data)
+                    }
+                    is DetailsUiState.Loading -> {
+                        Log.d(TAG, "Loading")
+                        setViewsLoadState()
+                    }
+                    is DetailsUiState.Error -> {
+                        Log.d(TAG, "Error")
+                        setViewsErrorState(state.msg)
+                    }
+                    is DetailsUiState.Empty -> {
+                        Log.d(TAG, "Empty")
+                        setViewsLoadState()
+                    }
                 }
             }
         }
@@ -51,7 +67,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         }
     }
 
-    private fun setViewsContentState() {
+/*    private fun setViewsContentState() {
         with(binding.loadingPart) {
             binding.contentLayout.show()
             progressBar.gone()
@@ -84,15 +100,85 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             errorMessageTv.gone()
             tryAgainButton.gone()
         }
+    }*/
+
+    private fun setViewsContentState() {
+//        binding.shimmerInclude.shimmerGifImage.
+//        binding.shimmerInclude.avatarShimmer
+        binding.shimmerInclude.shimmerUsername.gone()
+        binding.shimmerInclude.shimmerImageTitle.gone()
+        binding.contentLayout.show()
+    }
+
+    private fun setViewsErrorState(msg: String) {
+        binding.shimmerInclude.frameLayout.gone()
+        with(binding.loadingPart) {
+            binding.contentLayout.show()
+            progressBar.gone()
+            errorImage.show()
+            errorMessageTv.show()
+            tryAgainButton.show()
+
+            errorMessageTv.text = msg
+            tryAgainButton.setOnClickListener {
+                viewModel.refresh()
+            }
+        }
+    }
+
+    private fun setViewsLoadState() {
+        binding.contentLayout.hide()
+        binding.shimmerInclude.shimmerGifImage.startShimmer()
+        binding.shimmerInclude.avatarShimmer.startShimmer()
+        binding.shimmerInclude.shimmerUsername.startShimmer()
+        binding.shimmerInclude.shimmerImageTitle.startShimmer()
+        binding.shimmerInclude.shimmerGifImage.show()
+        binding.shimmerInclude.avatarShimmer.show()
+        binding.shimmerInclude.shimmerUsername.show()
+        binding.shimmerInclude.shimmerImageTitle.show()
+        /*with(binding.loadingPart) {
+            binding.contentLayout.hide()
+            progressBar.show()
+            errorImage.gone()
+            errorMessageTv.gone()
+            tryAgainButton.gone()
+        }*/
     }
 
     private fun setDetails(gif: GifItem) {
         setViewsContentState()
-        binding.username.text = gif.username
+        if (gif.username.isNotBlank()) {
+            binding.username.text = gif.username
+        } else {
+            binding.username.text = "user not found"
+        }
 
         Glide.with(requireContext())
             .asGif()
             .load(gif.images.fixedHeight.url)
+            .addListener(object : RequestListener<GifDrawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<GifDrawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: GifDrawable?,
+                    model: Any?,
+                    target: Target<GifDrawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    binding.shimmerInclude.shimmerGifImage.stopShimmer()
+                    binding.shimmerInclude.shimmerGifImage.gone()
+                    return false
+                }
+
+            })
             .placeholder(R.drawable.placeholder)
             .into(binding.gifImage)
 
@@ -100,10 +186,34 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         binding.imageTitle.text = gif.title
 
         Glide.with(requireContext())
+            .asGif()
             .load(gif.user?.avatarUrl)
+            .addListener(object : RequestListener<GifDrawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<GifDrawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: GifDrawable?,
+                    model: Any?,
+                    target: Target<GifDrawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    binding.shimmerInclude.avatarShimmer.stopShimmer()
+                    binding.shimmerInclude.avatarShimmer.gone()
+                    return false
+                }
+
+            })
             .placeholder(R.drawable.placeholder)
             .into(binding.userAvatar)
 
-        binding.userDescription.text = gif.user?.description
+        binding.userDescription.text = gif.user?.description ?: "No description"
     }
 }

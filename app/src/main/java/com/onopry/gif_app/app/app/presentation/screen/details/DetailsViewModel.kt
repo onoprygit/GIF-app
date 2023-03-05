@@ -9,6 +9,7 @@ import com.onopry.gif_app.app.common.ApiSuccess
 import com.onopry.gif_app.app.data.model.GifItem
 import com.onopry.gif_app.app.data.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ class DetailsViewModel @Inject constructor(private val repository: Repository) :
     var currentId: String? = null
     fun getDetails(id: String) {
         currentId = id
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             screenStateMutableFlow.emit(DetailsUiState.Loading)
             when (val response = repository.getById(id)) {
                 is ApiSuccess -> screenStateMutableFlow.emit(DetailsUiState.Content(response.data.gifItem))

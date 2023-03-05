@@ -12,6 +12,7 @@
         android:id="@+id/inputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:startIconDrawable="@drawable/ic_search"
         app:endIconCheckable="true"
         app:endIconDrawable="@drawable/ic_close"
         app:endIconMode="clear_text">
@@ -58,7 +59,7 @@
                 android:id="@+id/companiesRecycler"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/base_horizontal_offset"
+                android:layout_marginHorizontal="8dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
