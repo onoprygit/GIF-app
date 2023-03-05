@@ -33,7 +33,8 @@ class GIFRepository @Inject constructor(
         Pager(
             config = PagingConfig(
                 pageSize = DEFAULT_REQUEST_ITEMS_LIMIT,
-                enablePlaceholders = false
+                enablePlaceholders = false,
+                initialLoadSize = DEFAULT_REQUEST_ITEMS_LIMIT * 3
             ),
             pagingSourceFactory = {
                 GIFPagingSourceSearch(apiService = apiService, searchQuery = query)

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.onopry.gif_app.R
 import com.onopry.gif_app.app.app.presentation.adapter.GIFAdapter
+import com.onopry.gif_app.app.app.presentation.adapter.ItemOffsetDecoration
 import com.onopry.gif_app.app.common.gone
 import com.onopry.gif_app.app.common.hide
 import com.onopry.gif_app.app.common.observeRepeated
@@ -27,7 +28,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
     private lateinit var binding: FragmentListBinding
     private val viewModel: ListViewModel by viewModels()
     private val pagingAdapter: GIFAdapter by lazy {
-        GIFAdapter { openDetailsScreen(it) }
+        GIFAdapter(lifecycleScope) { openDetailsScreen(it) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,8 +36,19 @@ class ListFragment : Fragment(R.layout.fragment_list) {
         binding = FragmentListBinding.bind(view)
 
         binding.companiesRecycler.adapter = pagingAdapter
-        binding.companiesRecycler.layoutManager =
-            StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
+        val staggeredGridLayoutManager =
+            StaggeredGridLayoutManager(SPAN_COUNT, StaggeredGridLayoutManager.VERTICAL)
+//        staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
+        staggeredGridLayoutManager.gapStrategy =
+            StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+        binding.companiesRecycler.layoutManager = staggeredGridLayoutManager
+
+        binding.companiesRecycler.addItemDecoration(ItemOffsetDecoration(8))
+
+        binding.swipeToRefresh.setOnRefreshListener {
+            viewModel.refresh()
+            binding.swipeToRefresh.isRefreshing = false
+        }
 
         submitNoSearchedData()
         setupSearch()
@@ -72,6 +84,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
             }
         }
     }
+
     private fun openDetailsScreen(id: String) {
         val action = ListFragmentDirections.actionListFragmentToDetailsFragment(id)
         findNavController().navigate(action)
@@ -110,6 +123,10 @@ class ListFragment : Fragment(R.layout.fragment_list) {
             errorMessageTv.gone()
             tryAgainButton.gone()
         }
+    }
+
+    companion object {
+        private const val SPAN_COUNT = 2
     }
 }
 
